@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chá de Fraldas - Anna Cristina</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Camada de sobreposição para melhor legibilidade */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.85);
+            z-index: 0;
+        }
+        
+        .invitation-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            border: 8px solid #FFC8DD;
+            backdrop-filter: blur(5px);
+            margin: 20px;
+        }
+        
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .background-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .bg-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin: 5px;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .bg-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .header {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .bible-verse {
+            font-style: italic;
+            color: #555;
+            font-size: 1.1em;
+            margin: 15px auto;
+            padding: 15px;
+            background: rgba(255, 200, 221, 0.2);
+            border-radius: 15px;
+            border-left: 4px solid #FFAFCC;
+            max-width: 600px;
+        }
+        
+        .baby-name {
+            font-size: 2.8em;
+            color: #FF5C8D;
+            margin: 20px 0;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        .message {
+            font-size: 1.3em;
+            color: #333;
+            margin: 25px 0;
+            line-height: 1.6;
+        }
+        
+        .details-box {
+            background: linear-gradient(135deg, rgba(255, 200, 221, 0.9), rgba(255, 175, 204, 0.9));
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .details-box::before {
+            content: '🎀';
+            position: absolute;
+            font-size: 100px;
+            opacity: 0.1;
+            right: 20px;
+            top: 20px;
+        }
+        
+        .date-time {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .location {
+            font-size: 1.3em;
+            color: #444;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            line-height: 1.5;
+        }
+        
+        .confirmation-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 3px solid #A2D2FF;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .stat-box {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 140px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border: 2px solid #CDB4DB;
+        }
+        
+        .stat-box:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 2.8em;
+            font-weight: bold;
+            color: #FF5C8D;
+            display: block;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 1em;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .confirmation-btn {
+            background: linear-gradient(135deg, #FF5C8D, #FF8EAB);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.4em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(255, 92, 141, 0.3);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .confirmation-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 92, 141, 0.4);
+        }
+        
+        .confirmation-btn.confirmed {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.3);
+        }
+        
+        .whatsapp-notification {
+            background: #25D366;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px auto;
+            max-width: 500px;
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .admin-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 3px solid #FFAFCC;
+            display: none;
+        }
+        
+        .guest-list {
+            max-height: 250px;
+            overflow-y: auto;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            text-align: left;
+        }
+        
+        .guest-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .action-buttons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            background: linear-gradient(135deg, #A2D2FF, #BDE0FE);
+            color: #333;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(162, 210, 255, 0.3);
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.95em;
+            padding-top: 20px;
+            border-top: 2px dashed #FFC8DD;
+        }
+        
+        .diaper-icon {
+            font-size: 2em;
+            margin: 0 10px;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @media (max-width: 768px) {
+            .invitation-card {
+                padding: 25px;
+            }
+            
+            .baby-name {
+                font-size: 2.2em;
+            }
+            
+            .date-time {
+                font-size: 1.4em;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .confirmation-btn {
+                padding: 15px 30px;
+                font-size: 1.2em;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Imagem de fundo -->
+    <img src="33725cff-13ac-4ec5-abf2-1647270224a2.jpeg" alt="Fundo do chá de fraldas" class="background-image" id="backgroundImage">
+    
+    <!-- Controles do fundo -->
+    <div class="background-controls">
+        <div class="bg-btn" style="background: linear-gradient(135deg, #FFC8DD, #FFAFCC);" onclick="changeBackground('gradient1')"></div>
+        <div class="bg-btn" style="background: linear-gradient(135deg, #A2D2FF, #BDE0FE);" onclick="changeBackground('gradient2')"></div>
+        <div class="bg-btn" style="background: linear-gradient(135deg, #CDB4DB, #FFC8DD);" onclick="changeBackground('gradient3')"></div>
+        <div class="bg-btn" style="background-image: url('33725cff-13ac-4ec5-abf2-1647270224a2.jpeg');" onclick="changeBackground('photo')"></div>
+    </div>
+    
+    <!-- Cartão do convite -->
+    <div class="invitation-card">
+        <!-- Cabeçalho -->
+        <div class="header">
+            <h1 style="color: #FF5C8D; font-size: 2.5em; margin-bottom: 10px;">
+                <span class="diaper-icon">👶</span> Chá de Fraldas <span class="diaper-icon">🍼</span>
+            </h1>
+            
+            <div class="bible-verse">
+                "Eis que filhos são herança do Senhor; o fruto do ventre, o seu galardão."
+                <br><span style="font-size: 0.9em; color: #777;">Salmos 127:3</span>
+            </div>
+        </div>
+        
+        <!-- Mensagem central -->
+        <div class="baby-name">Anna Cristina</div>
+        
+        <div class="message">
+            Estou chegando e o meu chá de fraldas será um momento especial!
+        </div>
+        
+        <!-- Detalhes do evento -->
+        <div class="details-box">
+            <div class="date-time">
+                <span>📅</span>
+                <strong>Sábado, 28 de Fevereiro</strong>
+                <span>⏰</span>
+                <strong>13h00</strong>
+            </div>
+            
+            <div class="location">
+                <span>📍</span>
+                <strong>Local:</strong><br>
+                Centralidade Vida Pacífica<br>
+                Zona 2 – Bloco 6 – Edifício 1
+            </div>
+        </div>
+        
+        <!-- Seção de confirmação -->
+        <div class="confirmation-section">
+            <h2 style="color: #FF5C8D; margin-bottom: 20px;">📝 Confirmação de Presença</h2>
+            
+            <div class="stats-container">
+                <div class="stat-box">
+                    <span class="stat-number" id="totalConfirmados">0</span>
+                    <span class="stat-label">Confirmados</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number" id="totalPendentes">?</span>
+                    <span class="stat-label">Aguardando</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">🎁</span>
+                    <span class="stat-label">Presentes</span>
+                </div>
+            </div>
+            
+            <button class="confirmation-btn" onclick="confirmarPresenca()" id="confirmBtn">
+                ✨ Confirmar Minha Presença
+            </button>
+            
+            <div id="whatsappNotification" class="whatsapp-notification">
+                ✅ Notificação enviada para a mamãe!
+            </div>
+            
+            <p style="margin: 20px 0; color: #555; font-size: 1.1em;">
+                Contamos com a sua presença! 💝
+            </p>
+        </div>
+        
+        <!-- Painel de administração -->
+        <div class="admin-panel" id="adminPanel">
+            <h3 style="color: #FF5C8D; margin-bottom: 20px;">👑 Painel de Controle</h3>
+            
+            <div class="guest-list" id="guestList">
+                <!-- Lista de convidados será carregada aqui -->
+                <p style="text-align: center; color: #888; padding: 20px;">
+                    Nenhuma confirmação ainda...
+                </p>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <button class="action-btn" onclick="exportarLista()" style="background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white;">
+                    📊 Exportar Lista
+                </button>
+                <button class="action-btn" onclick="limparConfirmacoes()" style="background: linear-gradient(135deg, #f44336, #d32f2f); color: white;">
+                    🗑️ Limpar Tudo
+                </button>
+            </div>
+            
+            <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                Total de confirmados: <span id="adminTotal" style="font-weight: bold;">0</span>
+            </p>
+        </div>
+        
+        <!-- Botões de ação -->
+        <div class="action-buttons">
+            <button class="action-btn" onclick="mostrarPainelAdmin()">
+                🔐 Controle de Confirmados
+            </button>
+            <button class="action-btn" onclick="downloadPDF()">
+                📥 Baixar Convite
+            </button>
+            <button class="action-btn" onclick="compartilharLink()">
+                🔗 Compartilhar
+            </button>
+        </div>
+        
+        <!-- Rodapé -->
+        <div class="footer">
+            <p>Com amor e gratidão,<br>
+            <span style="color: #FF5C8D; font-weight: bold;">A futura mamãe e família</span></p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                WhatsApp: (94) 7399-434 | Em caso de dúvidas
+            </p>
+        </div>
+    </div>
+
+    <!-- Bibliotecas para PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script>
+        // Sistema de armazenamento
+        let confirmacoes = JSON.parse(localStorage.getItem('chaFraldasConfirmacoes')) || [];
+        const SENHA_ADMIN = 'anna123'; // Senha para o painel
+        
+        // Elementos DOM
+        const elements = {
+            totalConfirmados: document.getElementById('totalConfirmados'),
+            totalPendentes: document.getElementById('totalPendentes'),
+            adminPanel: document.getElementById('adminPanel'),
+            guestList: document.getElementById('guestList'),
+            adminTotal: document.getElementById('adminTotal'),
+            confirmBtn: document.getElementById('confirmBtn'),
+            whatsappNotification: document.getElementById('whatsappNotification'),
+            backgroundImage: document.getElementById('backgroundImage')
+        };
+
+        // Configurações iniciais
+        const TOTAL_CONVIDADOS = 50; // Total estimado de convidados
+
+        // Atualizar estatísticas
+        function atualizarEstatisticas() {
+            const confirmados = confirmacoes.length;
+            elements.totalConfirmados.textContent = confirmados;
+            elements.totalPendentes.textContent = TOTAL_CONVIDADOS - confirmados;
+            elements.adminTotal.textContent = confirmados;
+        }
+
+        // Mudar fundo
+        function changeBackground(type) {
+            const bg = elements.backgroundImage;
+            
+            switch(type) {
+                case 'gradient1':
+                    document.body.style.background = 'linear-gradient(135deg, #FFC8DD 0%, #FFAFCC 100%)';
+                    bg.style.opacity = '0';
+                    break;
+                case 'gradient2':
+                    document.body.style.background = 'linear-gradient(135deg, #A2D2FF 0%, #BDE0FE 100%)';
+                    bg.style.opacity = '0';
+                    break;
+                case 'gradient3':
+                    document.body.style.background = 'linear-gradient(135deg, #CDB4DB 0%, #FFC8DD 100%)';
+                    bg.style.opacity = '0';
+                    break;
+                case 'photo':
+                    document.body.style.background = 'none';
+                    bg.style.opacity = '0.3';
+                    break;
+            }
+        }
+
+        // Confirmar presença
+        function confirmarPresenca() {
+            const nome = prompt('Por favor, digite seu nome completo:');
+            if (!nome) return;
+            
+            const telefone = prompt('Digite seu WhatsApp (para lembretes):') || '';
+            const acompanhantes = prompt('Quantas pessoas virão com você? (incluindo você)') || '1';
+            
+            const confirmacao = {
+                id: Date.now(),
+                nome: nome.trim(),
+                telefone: telefone,
+                acompanhantes: parseInt(acompanhantes) || 1,
+                data: new Date().toLocaleString('pt-BR'),
+                mensagem: prompt('Deixe uma mensagem especial para a Anna Cristina (opcional):') || ''
+            };
+            
+            confirmacoes.push(confirmacao);
+            localStorage.setItem('chaFraldasConfirmacoes', JSON.stringify(confirmacoes));
+            
+            // Atualizar interface
+            elements.confirmBtn.innerHTML = '✅ Presença Confirmada!';
+            elements.confirmBtn.classList.add('confirmed');
+            elements.confirmBtn.disabled = true;
+            elements.confirmBtn.onclick = null;
+            
+            // Notificação
+            elements.whatsappNotification.style.display = 'block';
+            setTimeout(() => {
+                elements.whatsappNotification.style.display = 'none';
+            }, 5000);
+            
+            // Atualizar dados
+            atualizarEstatisticas();
+            atualizarListaConvidados();
+            
+            // Enviar notificação
+            enviarNotificacaoWhatsApp(confirmacao);
+            
+            alert(`Obrigada, ${nome}! Sua presença foi confirmada com sucesso! 🎀`);
+            localStorage.setItem('usuarioConfirmou', 'true');
+        }
+
+        // Enviar notificação para WhatsApp
+        function enviarNotificacaoWhatsApp(confirmacao) {
+            const telefoneMae = '947399434';
+            const mensagem = `🎀 *NOVA CONFIRMAÇÃO - CHÁ DE FRALDAS* 🎀\n\n` +
+                           `👤 *Convidado:* ${confirmacao.nome}\n` +
+                           `👥 *Pessoas:* ${confirmacao.acompanhantes} pessoa(s)\n` +
+                           `📅 *Confirmado em:* ${confirmacao.data}\n` +
+                           (confirmacao.telefone ? `📱 *Contato:* ${confirmacao.telefone}\n` : '') +
+                           (confirmacao.mensagem ? `💝 *Mensagem:* "${confirmacao.mensagem}"\n` : '') +
+                           `\n📊 *Total confirmado:* ${confirmacoes.length} pessoa(s)`;
+            
+            // Link para WhatsApp Web
+            const whatsappLink = `https://wa.me/${telefoneMae}?text=${encodeURIComponent(mensagem)}`;
+            
+            console.log('Mensagem para WhatsApp:', mensagem);
+            
+            // Abrir WhatsApp (funciona em dispositivos móveis)
+            window.open(whatsappLink, '_blank');
+        }
+
+        // Mostrar painel admin
+        function mostrarPainelAdmin() {
+            const senha = prompt('Digite a senha de administrador:');
+            if (senha === SENHA_ADMIN) {
+                elements.adminPanel.style.display = 'block';
+                atualizarListaConvidados();
+                atualizarEstatisticas();
+                alert('Painel de administrador ativado! 👑');
+            } else {
+                alert('Senha incorreta! ❌');
+            }
+        }
+
+        // Atualizar lista de convidados
+        function atualizarListaConvidados() {
+            elements.guestList.innerHTML = '';
+            
+            if (confirmacoes.length === 0) {
+                elements.guestList.innerHTML = '<p style="text-align: center; color: #888; padding: 20px;">Nenhuma confirmação ainda...</p>';
+                return;
+            }
+            
+            let totalPessoas = 0;
+            
+            confirmacoes.forEach(conv => {
+                totalPessoas += conv.acompanhantes || 1;
+                
+                const div = document.createElement('div');
+                div.className = 'guest-item';
+                div.innerHTML = `
+                    <div>
+                        <strong>${conv.nome}</strong><br>
+                        <small>${conv.data} • ${conv.acompanhantes} pessoa(s)</small>
+                        ${conv.mensagem ? `<br><em style="color: #666; font-size: 0.9em;">"${conv.mensagem}"</em>` : ''}
+                        ${conv.telefone ? `<br><small style="color: #25D366;">📱 ${conv.telefone}</small>` : ''}
+                    </div>
+                    <button onclick="removerConfirmacao(${conv.id})" style="background: #ff4444; color: white; border: none; border-radius: 5px; padding: 8px 12px; cursor: pointer; font-size: 0.9em;">
+                        Remover
+                    </button>
+                `;
+                elements.guestList.appendChild(div);
+            });
+            
+            // Adicionar total no topo
+            const totalDiv = document.createElement('div');
+            totalDiv.style.background = '#FFC8DD';
+            totalDiv.style.padding = '10px';
+            totalDiv.style.borderRadius = '8px';
+            totalDiv.style.marginBottom = '10px';
+            totalDiv.style.textAlign = 'center';
+            totalDiv.innerHTML = `<strong>Total: ${confirmacoes.length} convidados (${totalPessoas} pessoas)</strong>`;
+            elements.guestList.prepend(totalDiv);
+        }
+
+        // Remover confirmação
+        function removerConfirmacao(id) {
+            if (confirm('Tem certeza que deseja remover esta confirmação?')) {
+                confirmacoes = confirmacoes.filter(c => c.id !== id);
+                localStorage.setItem('chaFraldasConfirmacoes', JSON.stringify(confirmacoes));
+                atualizarListaConvidados();
+                atualizarEstatisticas();
+                alert('Confirmação removida!');
+            }
+        }
+
+        // Exportar lista
+        function exportarLista() {
+            let csv = 'Nome,Telefone,Acompanhantes,Mensagem,Data\n';
+            confirmacoes.forEach(conv => {
+                csv += `"${conv.nome}","${conv.telefone}","${conv.acompanhantes}","${conv.mensagem}","${conv.data}"\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `lista-convidados-cha-fraldas-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            alert('Lista exportada com sucesso! 📊');
+        }
+
+        // Limpar confirmações
+        function limparConfirmacoes() {
+            if (confirm('⚠️ ATENÇÃO: Isso apagará TODAS as confirmações. Tem certeza?')) {
+                confirmacoes = [];
+                localStorage.removeItem('chaFraldasConfirmacoes');
+                localStorage.removeItem('usuarioConfirmou');
+                atualizarListaConvidados();
+                atualizarEstatisticas();
+                
+                // Resetar botão de confirmação
+                elements.confirmBtn.innerHTML = '✨ Confirmar Minha Presença';
+                elements.confirmBtn.classList.remove('confirmed');
+                elements.confirmBtn.disabled = false;
+                elements.confirmBtn.onclick = confirmarPresenca;
+                
+                alert('Todas as confirmações foram removidas!');
+            }
+        }
+
+        // Download PDF
+        async function downloadPDF() {
+            const card = document.querySelector('.invitation-card');
+            const bgControls = document.querySelector('.background-controls');
+            const originalDisplay = bgControls.style.display;
+            
+            // Esconder controles temporariamente
+            bgControls.style.display = 'none';
+            
+            try {
+                const canvas = await html2canvas(card, {
+                    scale: 2,
+                    backgroundColor: '#FFFFFF',
+                    useCORS: true,
+                    logging: false
+                });
+                
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                const imgWidth = 190;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                const xPos = (210 - imgWidth) / 2;
+                const yPos = (297 - imgHeight) / 2;
+                
+                pdf.addImage(imgData, 'PNG', xPos, yPos, imgWidth, imgHeight);
+                pdf.save(`Convite-Cha-Fraldas-Anna-Cristina.pdf`);
+                
+            } catch (error) {
+                console.error("Erro ao gerar PDF:", error);
+                alert("Erro ao gerar PDF. Por favor, tente novamente.");
+            } finally {
+                // Restaurar controles
+                bgControls.style.display = originalDisplay;
+            }
+        }
+
+        // Compartilhar link
+        function compartilharLink() {
+            const link = window.location.href;
+            const mensagem = `🎀 *Convite para o Chá de Fraldas da Anna Cristina* 🎀\n\n` +
+                           `Data: Sábado, 28 de Fevereiro\n` +
+                           `Horário: 13h00\n` +
+                           `Local: Centralidade Vida Pacífica\n\n` +
+                           `🔗 Confirme sua presença em: ${link}\n\n` +
+                           `Contamos com você! 💝`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Chá de Fraldas - Anna Cristina',
+                    text: mensagem,
+                    url: link
+                });
+            } else {
+                prompt('Copie o link para compartilhar:', link);
+            }
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            atualizarEstatisticas();
+            
+            // Verificar se já confirmou
+            if (localStorage.getItem('usuarioConfirmou')) {
+                elements.confirmBtn.innerHTML = '✅ Presença Já Confirmada';
+                elements.confirmBtn.classList.add('confirmed');
+                elements.confirmBtn.disabled = true;
+                elements.confirmBtn.onclick = null;
+            }
+            
+            // Usar a foto como fundo padrão
+            changeBackground('photo');
+        });
+    </script>
+</body>
+</html>
