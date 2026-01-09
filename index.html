@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt">
+    <a 
+  href="https://https://696178c1becca90008261c03--cha-fraldas.netlify.app/"
+  target="_blank"
+  class="floating-link"
+  title="Abrir convite"
+>
+  🌐
+</a>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -347,6 +356,29 @@
             .stats-container {
                 flex-direction: column;
                 align-items: center;
+                .floating-link {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 60px;
+  height: 60px;
+  background: #FF5C8D;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  text-decoration: none;
+  box-shadow: 0 10px 25px rgba(255, 92, 141, 0.4);
+  z-index: 9999;
+  transition: transform 0.3s ease;
+}
+
+.floating-link:hover {
+  transform: scale(1.1);
+}
+
             }
         }
     </style>
@@ -781,3 +813,4 @@
 </body>
 
 </html>
+
