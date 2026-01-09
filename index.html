@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chá de Fraldas - Anna Cristina</title>
+    <title>Chá de Fraldas - Áurea Cristina</title>
     <style>
         * {
             margin: 0;
@@ -378,7 +378,7 @@
         </div>
         
         <!-- Mensagem central -->
-        <div class="baby-name">Anna Cristina</div>
+        <div class="baby-name">Áurea Cristina</div>
         
         <div class="message">
             Estou chegando e o meu chá de fraldas será um momento especial!
@@ -476,7 +476,7 @@
             <p>Com amor e gratidão,<br>
             <span style="color: #FF5C8D; font-weight: bold;">A futura mamãe e família</span></p>
             <p style="margin-top: 10px; font-size: 0.9em;">
-                WhatsApp: (94) 7399-434 | Em caso de dúvidas
+                WhatsApp: +244 947399434 | Em caso de dúvidas
             </p>
         </div>
     </div>
@@ -488,7 +488,7 @@
     <script>
         // Sistema de armazenamento
         let confirmacoes = JSON.parse(localStorage.getItem('chaFraldasConfirmacoes')) || [];
-        const SENHA_ADMIN = 'anna123'; // Senha para o painel
+        const SENHA_ADMIN = 'aurea123'; // Senha para o painel
         
         // Elementos DOM
         const elements = {
@@ -730,7 +730,7 @@
                 const yPos = (297 - imgHeight) / 2;
                 
                 pdf.addImage(imgData, 'PNG', xPos, yPos, imgWidth, imgHeight);
-                pdf.save(`Convite-Cha-Fraldas-Anna-Cristina.pdf`);
+                pdf.save(`Convite-Cha-Fraldas-Áurea-Cristina.pdf`);
                 
             } catch (error) {
                 console.error("Erro ao gerar PDF:", error);
@@ -744,7 +744,7 @@
         // Compartilhar link
         function compartilharLink() {
             const link = window.location.href;
-            const mensagem = `🎀 *Convite para o Chá de Fraldas da Anna Cristina* 🎀\n\n` +
+            const mensagem = `🎀 *Convite para o Chá de Fraldas da Áurea Cristina* 🎀\n\n` +
                            `Data: Sábado, 28 de Fevereiro\n` +
                            `Horário: 13h00\n` +
                            `Local: Centralidade Vida Pacífica\n\n` +
@@ -753,7 +753,7 @@
             
             if (navigator.share) {
                 navigator.share({
-                    title: 'Chá de Fraldas - Anna Cristina',
+                    title: 'Chá de Fraldas - Áurea Cristina',
                     text: mensagem,
                     url: link
                 });
@@ -779,4 +779,5 @@
         });
     </script>
 </body>
+
 </html>
